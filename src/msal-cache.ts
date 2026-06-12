@@ -65,6 +65,7 @@ function getEncryptedPlugin(): Promise<ICachePlugin | null> {
  * Uses OS-encrypted storage when available; falls back to the plaintext
  * JSON file with a one-time warning otherwise.
  */
+let warnedAboutPlaintext = false;
 export const cachePlugin: ICachePlugin = {
   async beforeCacheAccess(cacheContext: TokenCacheContext): Promise<void> {
     const plugin = await getEncryptedPlugin();
@@ -72,11 +73,14 @@ export const cachePlugin: ICachePlugin = {
       return plugin.beforeCacheAccess(cacheContext);
     }
 
-    // Plaintext fallback
-    console.error(
-      "⚠️  teams-mcp: @azure/msal-node-extensions unavailable — " +
-      "token cache stored in plaintext at " + CACHE_PATH
-    );
+     // Plaintext fallback
+    if (!warnedAboutPlaintext) {
+      warnedAboutPlaintext = true;
+      console.error(
+        "⚠️  teams-mcp: `@azure/msal-node-extensions` unavailable — " +
+        "token cache stored in plaintext at " + CACHE_PATH
+      );
+    }
     try {
       const data = await fs.readFile(CACHE_PATH, "utf8");
       cacheContext.tokenCache.deserialize(data);

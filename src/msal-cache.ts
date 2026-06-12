@@ -8,7 +8,7 @@ const ENCRYPTED_CACHE_PATH = join(homedir(), ".teams-mcp-token-cache.dat");
 
 /**
  * Attempts to create an OS-level encrypted cache plugin using msal-node-extensions.
- * - Windows  : DPAPI (lié à ton compte utilisateur Windows)
+ * - Windows  : DPAPI (tied to your Windows user account)
  * - macOS    : Keychain
  * - Linux    : libsecret
  * Returns null if the extension is unavailable (fallback to plaintext).

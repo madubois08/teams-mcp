@@ -38,7 +38,8 @@ async function createEncryptedPlugin(): Promise<ICachePlugin | null> {
       const { LibSecretPersistence } = ext;
       persistence = await LibSecretPersistence.create(
         ENCRYPTED_CACHE_PATH,
-        { schema: "teams-mcp-token-cache" }
+        "teams-mcp",
+        "token-cache"
       );
     }
 
